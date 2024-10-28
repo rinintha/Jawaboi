@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400&display=swap" rel="stylesheet"> <!-- Link to Hanken Grotesk font -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Welcome</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center elements horizontally */
+            justify-content: center; /* Center elements vertically */
+            height: 100vh; /* Full height of the viewport */
+            margin: 0; /* Remove default margin */
+            font-family: 'Hanken Grotesk', sans-serif; /* Set the font for the body */
+        }
+        h2 {
+            margin: 0; /* Remove margin from h2 for closer positioning */
+        }
+        img {
+            width: 50%; /* Resize image to 80% of its original size */
+            height: auto;
+            margin-bottom: 10px; /* Reduce space below the image */
+        }
+        button {
+            padding: 10px 20px; /* Add some padding to the button */
+            font-size: 16px; /* Adjust font size */
+            font-family: 'Hanken Grotesk', sans-serif; /* Apply font to the button */
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome to</h2> <!-- Text above the image -->
+    <img src="{{ url_for('static', filename='images/welcome_image.png') }}" alt="Welcome Image">
+
+    <a href="{{ url_for('story1') }}"><button>Start</button></a>
+</body>
+</html>

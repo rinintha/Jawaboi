@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400&display=swap" rel="stylesheet"> <!-- Link to Hanken Grotesk font -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Game 2: Word Guessing</title>
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif; /* Apply font to body */
+            text-align: center; /* Center-align text */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column; /* Align items in a column */
+            justify-content: center; /* Center vertically */
+            align-items: center; /* Center horizontally */
+            height: 100vh; /* Full viewport height */
+            margin: 0; /* Remove default margin */
+        }
+        #guess-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        .underscore {
+            font-size: 24px;
+            letter-spacing: 10px;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        #dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid black;
+            padding: 20px;
+            text-align: center;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guess the Words</h1>
+    <h2>Find his favourite things!</h2>
+    <div id="guess-container">
+        <div id="clue"></div>
+        <div id="underscores" class="underscore"></div>
+        <div id="message"></div>
+    </div>
+
+    <div id="overlay"></div>
+    <div id="dialog">
+        <p id="dialog-message"></p>
+        <button id="dialog-button" onclick="nextClue()">Next Clue</button>
+    </div>
+
+    <script>
+        const clues = [
+            { clue: "food", answer: "tahu gimbal" },
+            { clue: "music person thingy", answer: "virtual riot" },
+            { clue: "person", answer: "rinintha" }
+        ];
+
+        let currentClueIndex = 0;
+        let currentAnswer = "";
+        let underscores = [];
+
+        function initGame() {
+            currentClueIndex = 0;
+            loadClue();
+        }
+
+        function loadClue() {
+            if (currentClueIndex < clues.length) {
+                const currentClue = clues[currentClueIndex];
+                currentAnswer = currentClue.answer.toLowerCase();
+                document.getElementById('clue').innerText = `Clue: ${currentClue.clue}`;
+                
+                // Prepare underscores, keeping spaces as is
+                underscores = currentAnswer.split('').map(char => char === ' ' ? ' ' : '_');
+                updateUnderscores();
+                document.getElementById('message').innerText = '';
+            } else {
+                showDialog("Congratulations! You've completed all the clues.", true);
+            }
+        }
+
+        function updateUnderscores() {
+            document.getElementById('underscores').innerText = underscores.join(' ');
+        }
+
+        // Event listener for typing directly
+        document.addEventListener('keypress', (event) => {
+            const letterInput = event.key.toLowerCase();
+
+            if (letterInput.length === 1 && /^[a-z]$/.test(letterInput)) {
+                let found = false;
+                for (let i = 0; i < currentAnswer.length; i++) {
+                    if (currentAnswer[i] === letterInput) {
+                        underscores[i] = letterInput; // Replace underscore with correct letter
+                        found = true;
+                    }
+                }
+                
+                if (found) {
+                    updateUnderscores();
+                    if (!underscores.includes('_')) {
+                        // Correctly guessed the word, check if it's the last clue
+                        if (currentClueIndex === clues.length - 1) {
+                            setTimeout(() => {
+                                showDialog(`Correct! The answer is "${currentAnswer}".`, true);
+                            }, 500); // Delay to show the correct answer message before finishing
+                        } else {
+                            setTimeout(() => {
+                                showDialog(`Correct! The answer is "${currentAnswer}".`, false);
+                            }, 500); // Delay to show the correct answer message before moving on
+                        }
+                    }
+                } else {
+                    document.getElementById('message').innerText = `Letter "${letterInput}" is not in the answer.`;
+                }
+            }
+        });
+
+        function showDialog(message, isComplete) {
+            document.getElementById('dialog-message').innerText = message;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('dialog').style.display = 'block';
+            document.getElementById('guess-container').style.display = 'none'; // Hide input fields
+
+            const dialogButton = document.getElementById('dialog-button');
+            if (isComplete) {
+                dialogButton.innerText = "OK";
+                dialogButton.onclick = function() {
+                    window.location.href = "{{ url_for('story3') }}"; // Redirect to Story 3
+                };
+            } else {
+                dialogButton.innerText = "Next Clue";
+                dialogButton.onclick = nextClue;
+            }
+        }
+
+        function nextClue() {
+            currentClueIndex++;
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('dialog').style.display = 'none';
+            document.getElementById('guess-container').style.display = 'flex'; // Show input fields
+            loadClue(); // Load next clue
+        }
+
+        // Start the game
+        initGame();
+    </script>
+</body>
+</html>

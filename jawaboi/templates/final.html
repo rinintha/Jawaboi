@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400&display=swap" rel="stylesheet"> <!-- Include the font -->
+    <title>Final Page</title>
+    <style>
+        html, body {
+            height: 100%; /* Full height */
+            margin: 0; /* Remove default margin */
+            display: flex; /* Enable flexbox */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+            font-family: 'Hanken Grotesk', sans-serif; /* Apply the font */
+            text-align: center; /* Center text */
+            flex-direction: column; /* Stack items vertically */
+        }
+    </style>
+</head>
+<body>
+    <h1>Good Job! 🩶</h1>
+    <p>Thank you for playing and happy birthday, Jawaboi</p>
+    <button onclick="restartGame()">Restart Game</button>
+
+    <script>
+        function restartGame() {
+            window.location.href = "{{ url_for('story1') }}"; // Redirect to Story 1
+        }
+    </script>
+</body>
+</html>

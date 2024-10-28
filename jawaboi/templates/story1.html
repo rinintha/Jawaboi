@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400&display=swap" rel="stylesheet"> <!-- Link to Hanken Grotesk font -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Story 1</title>
+    <style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif; /* Set the font for the body */
+            font-size: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center elements horizontally */
+            justify-content: center; /* Center elements vertically */
+            height: 100vh; /* Full height of the viewport */
+            margin: 0; /* Remove default margin */
+            text-align: center; /* Center-align the text */
+        }
+        h1 {
+            margin-bottom: 20px; /* Space below the heading */
+        }
+        p {
+            margin: 0; /* Remove default margin */
+        }
+        .spacer {
+            margin-top: 30px; /* Additional space above the button */
+        }
+    </style>
+</head>
+<body>
+    <h2>Semarang, October 28, 1993</h2>
+    <p id="story-text"></p> <!-- Use a paragraph for the story text -->
+    <script>
+        const storyText = "A cute Jawaboi was born. Little boy who brings warmth and joy to the people around him. Let's meet him!";
+        let index = 0;
+
+        function type() {
+            if (index < storyText.length) {
+                document.getElementById("story-text").innerHTML += storyText.charAt(index);
+                index++;
+                setTimeout(type, 50); // Adjust speed as needed
+            }
+        }
+
+        type(); // Start typing effect
+    </script>
+    <div class="spacer"></div> <!-- Spacer for button -->
+    <a href="{{ url_for('game1') }}"><button>Next</button></a>
+</body>
+</html>
